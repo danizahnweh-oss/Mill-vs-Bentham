@@ -50,17 +50,6 @@
             height: 100%;
         }
 
-        /* Robuster Bild-Container */
-        .img-container {
-            background-color: #e5e7eb;
-            min-height: 200px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            overflow: hidden;
-            border-radius: 0.5rem;
-        }
-        
         /* Druck-Styles */
         @media print {
             body { background: white; }
@@ -89,8 +78,6 @@
             }
             .input-group { page-break-inside: avoid; margin-bottom: 20px; }
             h3 { color: black !important; border-bottom: 1px solid #ccc; }
-            /* Bild beim Drucken ausblenden um Platz zu sparen */
-            img, .img-container { display: none !important; }
         }
         .print-only-header { display: none; }
         
@@ -160,17 +147,6 @@
                     <div class="bg-gray-100 p-3 rounded border-l-2 border-gray-400 italic mb-4">
                         "Es ist besser, ein unzufriedener Mensch zu sein als ein zufriedenes Schwein; besser ein unzufriedener Sokrates als ein zufriedener Narr. Und wenn der Narr oder das Schwein anderer Ansicht sind, dann deshalb, weil sie nur ihre eigene Seite der Angelegenheit kennen. Die andere Partei hingegen kennt beide Seiten."
                     </div>
-                    
-                    <div class="mt-4">
-                        <!-- Robuster Bild-Container -->
-                        <div class="img-container">
-                             <img src="https://upload.wikimedia.org/wikipedia/commons/9/99/John_Stuart_Mill_1870.jpg" 
-                                  alt="John Stuart Mill" 
-                                  class="w-full h-full object-cover"
-                                  onerror="this.style.display='none'; this.parentElement.innerHTML='<div class=\'text-center text-gray-400 text-sm\'><i class=\'fas fa-user-slash text-2xl mb-2\'></i><br>Bild nicht verfügbar</div>'">
-                        </div>
-                        <p class="text-xs text-gray-500 mt-1">John Stuart Mill (1806–1873)</p>
-                    </div>
                 </div>
 
                 <!-- Analysis Column -->
@@ -195,8 +171,8 @@
             
             <div class="no-print mb-8">
                 <div class="video-wrapper shadow-lg">
-                    <!-- Standard YouTube Link without nocookie in case that domain is blocked, or fallback -->
-                    <iframe src="https://www.youtube.com/embed/URR_Y57WfKk" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                    <!-- YouTube Nocookie für bessere Firewall-Kompatibilität -->
+                    <iframe src="https://www.youtube-nocookie.com/embed/URR_Y57WfKk" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
                 </div>
                 <div class="text-right text-xs mt-1 video-link">
                     <a href="https://www.youtube.com/watch?v=URR_Y57WfKk" target="_blank" class="text-philo-accent hover:underline"><i class="fas fa-external-link-alt"></i> Video lädt nicht? Hier klicken zum Ansehen auf YouTube</a>
@@ -260,20 +236,13 @@
             <h2 class="text-2xl font-serif font-bold text-philo-dark mb-4 border-b-2 border-philo-accent pb-2">III. Präferenzutilitarismus (Peter Singer)</h2>
             
             <div class="grid md:grid-cols-2 gap-8 mb-6">
-                 <!-- Singer Image -->
+                 <!-- Singer Info & Definition (No Image) -->
                 <div class="no-print">
-                     <div class="img-container">
-                        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/5/5e/Peter_Singer_at_MIT.jpg/640px-Peter_Singer_at_MIT.jpg" 
-                             alt="Peter Singer" 
-                             class="w-full h-full object-cover"
-                             onerror="this.style.display='none'; this.parentElement.innerHTML='<div class=\'text-center text-gray-400 text-sm\'><i class=\'fas fa-user-slash text-2xl mb-2\'></i><br>Bild nicht verfügbar</div>'">
-                     </div>
-                     <p class="text-xs text-gray-500 mt-1">Peter Singer (*1946), australischer Philosoph</p>
-                     
-                     <div class="mt-4 bg-yellow-50 p-4 rounded border border-yellow-200 text-sm">
-                        <h4 class="font-bold text-yellow-800 mb-1">Begriffserklärung: Präferenz</h4>
+                     <div class="bg-yellow-50 p-4 rounded border border-yellow-200 text-sm">
+                        <h4 class="font-bold text-yellow-800 mb-2">Begriffserklärung: Präferenz</h4>
                         <p>Eine "Präferenz" ist nicht nur ein kurzfristiges Lustempfinden, sondern ein grundlegendes Interesse oder ein Wunsch (z.B. der Wunsch weiterzuleben, der Wunsch nach Bildung, der Wunsch nach Schmerzfreiheit). Im Gegensatz zum klassischen Utilitarismus zählen hier <em>alle</em> Interessen, nicht nur die Bilanz von Lust/Unlust.</p>
                      </div>
+                     <p class="text-xs text-gray-500 mt-2 text-center">Peter Singer (*1946), australischer Philosoph</p>
                 </div>
 
                 <div class="source-text-box text-sm leading-relaxed overflow-y-auto max-h-[600px] bg-white p-6 rounded shadow border-l-4 border-philo-dark">

@@ -31,33 +31,48 @@
             background-color: #f9f7f1;
             color: #333;
         }
-        /* Fallback für Bilder */
-        img {
-            min-height: 50px;
+        
+        /* Robuste Video-Einbettung (Padding-Hack für 16:9) */
+        .video-wrapper {
+            position: relative;
+            padding-bottom: 56.25%; /* 16:9 Ratio */
+            height: 0;
+            overflow: hidden;
+            background-color: #000;
+            border-radius: 0.5rem;
+            margin-bottom: 0.5rem;
+        }
+        .video-wrapper iframe {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+        }
+
+        /* Robuster Bild-Container */
+        .img-container {
             background-color: #e5e7eb;
+            min-height: 200px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            border-radius: 0.5rem;
         }
         
-        /* Druck-Styles: Versteckt alles außer User-Input */
+        /* Druck-Styles */
         @media print {
-            body {
-                background: white;
+            body { background: white; }
+            .no-print, header, footer, .tab-nav, .video-wrapper, .video-link, .instructions { display: none !important; }
+            .source-text-box { display: none !important; }
+            .print-only-header { 
+                display: block !important; 
+                margin-bottom: 20px; 
+                border-bottom: 2px solid black; 
+                text-align: center;
             }
-            .no-print, header, footer, .tab-nav, .video-container, .instructions {
-                display: none !important;
-            }
-            /* Die langen Quellentexte blenden wir beim Drucken aus, damit nur die Ergebnisse bleiben */
-            .source-text-box {
-                display: none !important;
-            }
-            .print-only-header {
-                display: block !important;
-                margin-bottom: 20px;
-                border-bottom: 2px solid black;
-            }
-            .tab-content {
-                display: block !important;
-                opacity: 1 !important;
-            }
+            .tab-content { display: block !important; opacity: 1 !important; }
             textarea {
                 border: 1px solid #ddd;
                 resize: none;
@@ -72,14 +87,10 @@
                 display: block;
                 page-break-inside: avoid;
             }
-            .input-group {
-                page-break-inside: avoid;
-                margin-bottom: 20px;
-            }
-            h3 {
-                color: black !important;
-                border-bottom: 1px solid #ccc;
-            }
+            .input-group { page-break-inside: avoid; margin-bottom: 20px; }
+            h3 { color: black !important; border-bottom: 1px solid #ccc; }
+            /* Bild beim Drucken ausblenden um Platz zu sparen */
+            img, .img-container { display: none !important; }
         }
         .print-only-header { display: none; }
         
@@ -95,9 +106,6 @@
             font-weight: bold;
             margin-bottom: 0.5rem;
             display: block;
-        }
-        .text-indent {
-            text-indent: 1.5em;
         }
     </style>
 </head>
@@ -119,8 +127,8 @@
     <!-- Main Content -->
     <main class="flex-grow max-w-4xl mx-auto w-full p-4 md:p-8">
 
-        <!-- Druck-Header (nur sichtbar beim Drucken) -->
-        <div class="print-only-header text-center">
+        <!-- Druck-Header -->
+        <div class="print-only-header">
             <h1>Arbeitsblatt: Utilitarismus-Varianten</h1>
             <p>Ergebnisse der Textarbeit: Mill, Frankena, Singer</p>
         </div>
@@ -147,18 +155,20 @@
                         "Die Auffassung, für die die Nützlichkeit oder das Prinzip des größten Glücks die Grundlage der Moral ist, besagt, dass Handlungen insoweit und in dem Maße moralisch richtig sind, als sie die Tendenz haben, Glück zu befördern, und insoweit moralisch falsch, als sie die Tendenz haben, das Gegenteil von Glück zu bewirken. Unter 'Glück' ist dabei Lust und das Freisein von Unlust, unter 'Unglück' Unlust und das Fehlen von Lust verstanden. [...]"
                     </p>
                     <p class="text-justify mb-4">
-                        "Es ist nun aber eine unbestreitbare Tatsache, dass diejenigen, die mit beiden gleichermaßen bekannt und für beide gleichermaßen empfänglich sind, der Lebensweise entschieden den Vorzug geben, an der auch ihre höheren Fähigkeiten beteiligt sind. Nur wenige Menschen würden darein einwilligen, sich in eines der niederen Tiere verwandeln zu lassen, wenn man ihnen verspräche, dass sie die Befriedigung des Tiers im vollen Umfange auskosten dürften. Kein intelligenter Mensch möchte ein Narr, kein gebildeter Mensch ein Dummkopf, keiner, der feinfühlig und gewissenhaft ist, selbstsüchtig und niederträchtig sein – auch wenn sie überzeugt wären, dass der Narr, der Dummkopf oder der Schurke mit seinem Schicksal zufriedener ist als sie mit dem ihren."
+                        "Es ist nun aber eine unbestreitbare Tatsache, dass diejenigen, die mit beiden gleichermaßen bekannt und für beide gleichermaßen empfänglich sind, der Lebensweise entschieden den Vorzug geben, an der auch ihre höheren Fähigkeiten beteiligt sind. Nur wenige Menschen würden darein einwilligen, sich in eines der niederen Tiere verwandeln zu lassen, wenn man ihnen verspräche, dass sie die Befriedigung des Tiers im vollen Umfange auskosten dürften. Kein intelligenter Mensch möchte ein Narr, kein gebildeter Mensch ein Dummkopf, keiner, der feinfühlig und gewissenhaft ist, selbstsüchtig und niederträchtig sein..."
                     </p>
                     <div class="bg-gray-100 p-3 rounded border-l-2 border-gray-400 italic mb-4">
                         "Es ist besser, ein unzufriedener Mensch zu sein als ein zufriedenes Schwein; besser ein unzufriedener Sokrates als ein zufriedener Narr. Und wenn der Narr oder das Schwein anderer Ansicht sind, dann deshalb, weil sie nur ihre eigene Seite der Angelegenheit kennen. Die andere Partei hingegen kennt beide Seiten."
                     </div>
                     
                     <div class="mt-4">
-                        <!-- Robuste Bild-Einbindung -->
-                        <img src="https://upload.wikimedia.org/wikipedia/commons/9/99/John_Stuart_Mill_1870.jpg" 
-                             alt="John Stuart Mill" 
-                             class="w-full h-48 object-cover object-top rounded grayscale hover:grayscale-0 transition duration-500"
-                             onerror="this.style.display='none'; this.parentElement.innerHTML+='<div class=\'bg-gray-200 p-4 text-center text-xs rounded text-gray-500\'><i class=\'fas fa-user-graduate mb-2 text-2xl\'></i><br>Bild von J.S. Mill (Wikimedia) nicht verfügbar</div>'">
+                        <!-- Robuster Bild-Container -->
+                        <div class="img-container">
+                             <img src="https://upload.wikimedia.org/wikipedia/commons/9/99/John_Stuart_Mill_1870.jpg" 
+                                  alt="John Stuart Mill" 
+                                  class="w-full h-full object-cover"
+                                  onerror="this.style.display='none'; this.parentElement.innerHTML='<div class=\'text-center text-gray-400 text-sm\'><i class=\'fas fa-user-slash text-2xl mb-2\'></i><br>Bild nicht verfügbar</div>'">
+                        </div>
                         <p class="text-xs text-gray-500 mt-1">John Stuart Mill (1806–1873)</p>
                     </div>
                 </div>
@@ -183,8 +193,14 @@
                 </div>
             </div>
             
-            <div class="video-container no-print mb-8 aspect-video w-full bg-black rounded overflow-hidden">
-                <iframe class="w-full h-full" src="https://www.youtube-nocookie.com/embed/URR_Y57WfKk" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+            <div class="no-print mb-8">
+                <div class="video-wrapper shadow-lg">
+                    <!-- Standard YouTube Link without nocookie in case that domain is blocked, or fallback -->
+                    <iframe src="https://www.youtube.com/embed/URR_Y57WfKk" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                </div>
+                <div class="text-right text-xs mt-1 video-link">
+                    <a href="https://www.youtube.com/watch?v=URR_Y57WfKk" target="_blank" class="text-philo-accent hover:underline"><i class="fas fa-external-link-alt"></i> Video lädt nicht? Hier klicken zum Ansehen auf YouTube</a>
+                </div>
             </div>
         </div>
 
@@ -200,12 +216,12 @@
                     
                     <h4 class="font-bold text-yellow-700 mt-4 mb-2">A. Der Handlungsutilitarismus</h4>
                     <p class="text-justify mb-3">
-                        "Handlungsutilitaristen sind der Meinung, man solle, was richtig oder pflichtmäßig ist, im Allgemeinen [...] unter unmittelbarer Heranziehung des Prinzips der Nützlichkeit entscheiden [...]. Man muss sich fragen: 'Welche Folgen wird meine Ausführung dieser Handlung in dieser Situation haben?' [...] Verallgemeinerungen [...] mögen als Faustregeln, gegründet auf in der Vergangenheit gemachten Erfahrungen, von Nutzen sein; aber [es] kann niemals richtig sein, der Regel, die Wahrheit zu sagen, Folge zu leisten, wenn in einem konkreten Fall stichhaltige Gründe für die Annahme vorliegen, dass dem genannten Ziel mit einer Lüge besser gedient ist."
+                        "Handlungsutilitaristen sind der Meinung, man solle, was richtig oder pflichtmäßig ist, im Allgemeinen [...] unter unmittelbarer Heranziehung des Prinzips der Nützlichkeit entscheiden [...]. Man muss sich fragen: 'Welche Folgen wird meine Ausführung dieser Handlung in dieser Situation haben?' [...]"
                     </p>
 
                     <h4 class="font-bold text-blue-700 mt-4 mb-2">B. Der Regelutilitarismus</h4>
                     <p class="text-justify mb-3">
-                        "Anderer Meinung ist der Regelutilitarismus [...]. [Dieser] betont [...] die zentrale Rolle von Regeln für die Moral und besteht darauf [...], konkrete moralische Entscheidungen im Einklang mit einer Regel zu fällen (wie der Regel, die Wahrheit zu sagen), ohne Rücksicht darauf, welche Handlungsalternative in der betreffenden Situation die besten Folgen hat. [...] Zudem verlangt der Regelutilitarismus weiter, Regeln stets so zu wählen, dass sie ihrerseits auf das größte allgemeine Wohl ausgerichtet sind."
+                        "Anderer Meinung ist der Regelutilitarismus [...]. [Dieser] betont [...] die zentrale Rolle von Regeln für die Moral und besteht darauf [...], konkrete moralische Entscheidungen im Einklang mit einer Regel zu fällen (wie der Regel, die Wahrheit zu sagen), ohne Rücksicht darauf, welche Handlungsalternative in der betreffenden Situation die besten Folgen hat. [...]"
                     </p>
                     <div class="bg-gray-100 p-3 rounded border-l-2 border-gray-400 italic">
                         "Das heißt, die Frage lautet nicht mehr, welche Handlung am nützlichsten ist, sondern welche Regel. Wenn wir eine Handlung in Betracht ziehen, so sollten wir uns nicht fragen 'Was werden die Folgen sein, wenn ich in diesem Fall so handle?', sondern 'Was wären die Folgen, wenn jeder in derartigen Fällen so handelte?'"
@@ -246,11 +262,13 @@
             <div class="grid md:grid-cols-2 gap-8 mb-6">
                  <!-- Singer Image -->
                 <div class="no-print">
-                     <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/5/5e/Peter_Singer_at_MIT.jpg/800px-Peter_Singer_at_MIT.jpg" 
-                          alt="Peter Singer" 
-                          class="w-full rounded shadow-md mb-2 max-h-64 object-cover"
-                          onerror="this.style.display='none'; this.parentElement.innerHTML+='<div class=\'bg-gray-200 h-48 flex items-center justify-center text-gray-500 rounded\'><i class=\'fas fa-user-tie text-4xl\'></i></div>'">
-                     <p class="text-xs text-gray-500">Peter Singer (*1946), australischer Philosoph</p>
+                     <div class="img-container">
+                        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/5/5e/Peter_Singer_at_MIT.jpg/640px-Peter_Singer_at_MIT.jpg" 
+                             alt="Peter Singer" 
+                             class="w-full h-full object-cover"
+                             onerror="this.style.display='none'; this.parentElement.innerHTML='<div class=\'text-center text-gray-400 text-sm\'><i class=\'fas fa-user-slash text-2xl mb-2\'></i><br>Bild nicht verfügbar</div>'">
+                     </div>
+                     <p class="text-xs text-gray-500 mt-1">Peter Singer (*1946), australischer Philosoph</p>
                      
                      <div class="mt-4 bg-yellow-50 p-4 rounded border border-yellow-200 text-sm">
                         <h4 class="font-bold text-yellow-800 mb-1">Begriffserklärung: Präferenz</h4>
@@ -266,7 +284,7 @@
                         "[...] Moralische Urteile fällen, über unsere eigenen Neigungen und Abneigungen hinausgehen. Von einem moralischen Standpunkt [moral point of view] aus betrachtet ist die Tatsache unerheblich, dass ich es bin, der beispielsweise davon profitiert, zu mogeln, und dass du es bist, der dabei verliert. Die Ethik verlangt von uns, dass wir über 'Ich' und 'Du' hinausgehen hin zu einem universalen Gesetz, dem universalisierbaren Urteil, dem Standpunkt des unparteiischen Betrachters [...]."
                     </p>
                     <p class="text-justify mb-3">
-                        "Der universale Aspekt der Ethik, meine ich, liefert uns eine Basis dafür, zumindest anfänglich eine utilitaristische Position im weiteren Sinn einzunehmen. [...] Meine Begründung für diese Behauptung ist folgende: Indem ich akzeptiere, dass moralische Urteile von einem universalen Standpunkt aus getroffen werden müssen, akzeptiere ich, dass meine eigenen Bedürfnisse, Wünsche und Interessen nicht einfach deshalb, weil sie <em>meine</em> Präferenzen sind, mehr zählen als die Interessen von irgendjemand anderem. Daher muss dann, wenn ich moralisch denke, mein ganz natürliches Bestreben, dass für meine Bedürfnisse, Wünsche und Interessen – ich werde sie von nun an als 'Präferenzen' bezeichnen – gesorgt wird, ausgedehnt werden auf die Präferenzen anderer."
+                        "Der universale Aspekt der Ethik, meine ich, liefert uns eine Basis dafür, zumindest anfänglich eine utilitaristische Position im weiteren Sinn einzunehmen. [...] Meine Begründung für diese Behauptung ist folgende: Indem ich akzeptiere, dass moralische Urteile von einem universalen Standpunkt aus getroffen werden müssen, akzeptiere ich, dass meine eigenen Bedürfnisse, Wünsche und Interessen nicht einfach deshalb, weil sie <em>meine</em> Präferenzen sind, mehr zählen als die Interessen von irgendjemand anderem."
                     </p>
                     <div class="bg-gray-100 p-3 rounded border-l-2 border-gray-400 italic">
                         "Also muss ich nun anstelle meiner eigenen Präferenzen die all der anderen berücksichtigen, die von meiner Entscheidung betroffen sind. [...] Das ist die erste skizzierte Denkweise ist eine Form von Utilitarismus [...]. Im Gegensatz dazu ist die bereits erwähnte Auffassung unter dem Namen 'Präferenz-Utilitarismus' bekannt, weil sie behauptet, dass wir das tun sollten, was per saldo die Präferenzen der Betroffenen fördert."
@@ -296,7 +314,7 @@
                 <div class="border-2 border-gray-300 rounded p-4 bg-white">
                     <h3 class="font-serif font-bold text-xl mb-2 text-center text-gray-600">Jeremy Bentham</h3>
                     <div class="text-xs text-center mb-4 uppercase tracking-widest text-gray-400 font-bold">Quantitativer Hedonismus</div>
-                    <div class="text-sm italic text-gray-500 text-center mb-4">"Pushpin is as good as poetry" (Wenn das Spiel so viel Lust bereitet wie Poesie, ist es gleichwertig)</div>
+                    <div class="text-sm italic text-gray-500 text-center mb-4">"Pushpin is as good as poetry"</div>
                     
                     <div class="input-group">
                         <label class="block font-bold text-sm mb-1 text-philo-dark">Angriff auf Mill:</label>
@@ -307,9 +325,6 @@
 
                 <!-- Mill Side -->
                 <div class="border-2 border-philo-dark rounded p-4 bg-white relative">
-                    <!-- VS Badge -->
-                    <div class="absolute top-1/2 -left-6 bg-philo-accent text-white rounded-full w-10 h-10 flex items-center justify-center font-bold border-4 border-philo-bg transform -translate-y-1/2 hidden md:flex">VS</div>
-
                     <h3 class="font-serif font-bold text-xl mb-2 text-center text-philo-dark">John Stuart Mill</h3>
                     <div class="text-xs text-center mb-4 uppercase tracking-widest text-philo-accent font-bold">Qualitativer Hedonismus</div>
                      <div class="text-sm italic text-gray-500 text-center mb-4">"Es ist besser ein unzufriedener Sokrates zu sein..."</div>
@@ -344,22 +359,15 @@
     <script>
         // Tab Switching Logic
         function switchTab(tabId) {
-            // Hide all tabs
             document.querySelectorAll('.tab-content').forEach(tab => tab.classList.remove('active'));
-            // Remove active styles from buttons
             document.querySelectorAll('.tab-nav button').forEach(btn => {
                 btn.classList.remove('bg-philo-dark', 'text-white');
                 btn.classList.add('bg-white', 'text-philo-dark');
             });
-
-            // Show clicked tab
             document.getElementById(tabId).classList.add('active');
-            // Style active button
             const activeBtn = document.getElementById('btn-' + tabId);
             activeBtn.classList.remove('bg-white', 'text-philo-dark');
             activeBtn.classList.add('bg-philo-dark', 'text-white');
-
-            // Save state
             localStorage.setItem('currentTab_Mill', tabId);
         }
 
@@ -376,8 +384,6 @@
                 const val = localStorage.getItem(id);
                 if (val) document.getElementById(id).value = val;
             });
-            
-            // Load last tab
             const lastTab = localStorage.getItem('currentTab_Mill');
             if (lastTab) switchTab(lastTab);
             else switchTab('tab1');
@@ -390,7 +396,6 @@
             setTimeout(() => status.style.opacity = '0.7', 1000);
         }
 
-        // Init
         document.addEventListener('DOMContentLoaded', () => {
             loadData();
             inputs.forEach(id => {

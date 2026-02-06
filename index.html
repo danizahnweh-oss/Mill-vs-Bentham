@@ -1,0 +1,403 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Utilitarismus Vertiefung: Mill, Regelutilitarismus & Singer</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Merriweather:ital,wght@0,300;0,400;0,700;1,300&family=Open+Sans:wght@400;600&display=swap" rel="stylesheet">
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Open Sans', 'sans-serif'],
+                        serif: ['Merriweather', 'serif'],
+                    },
+                    colors: {
+                        'philo-bg': '#f9f7f1',
+                        'philo-dark': '#2c3e50',
+                        'philo-accent': '#e67e22',
+                        'philo-soft': '#ecf0f1'
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body {
+            background-color: #f9f7f1;
+            color: #333;
+        }
+        /* Fallback für Bilder */
+        img {
+            min-height: 50px;
+            background-color: #e5e7eb;
+        }
+        
+        /* Druck-Styles: Versteckt alles außer User-Input */
+        @media print {
+            body {
+                background: white;
+            }
+            .no-print, header, footer, .tab-nav, .video-container, .instructions {
+                display: none !important;
+            }
+            /* Die langen Quellentexte blenden wir beim Drucken aus, damit nur die Ergebnisse bleiben */
+            .source-text-box {
+                display: none !important;
+            }
+            .print-only-header {
+                display: block !important;
+                margin-bottom: 20px;
+                border-bottom: 2px solid black;
+            }
+            .tab-content {
+                display: block !important;
+                opacity: 1 !important;
+            }
+            textarea {
+                border: 1px solid #ddd;
+                resize: none;
+                height: auto;
+                overflow: visible;
+                font-family: 'Courier New', Courier, monospace;
+                font-size: 11pt;
+                width: 100%;
+                background: white !important;
+                color: black !important;
+                padding: 5px;
+                display: block;
+                page-break-inside: avoid;
+            }
+            .input-group {
+                page-break-inside: avoid;
+                margin-bottom: 20px;
+            }
+            h3 {
+                color: black !important;
+                border-bottom: 1px solid #ccc;
+            }
+        }
+        .print-only-header { display: none; }
+        
+        .tab-content { display: none; animation: fadeIn 0.4s ease-in-out; }
+        .tab-content.active { display: block; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+        
+        .source-marker {
+            font-size: 0.7rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: #e67e22;
+            font-weight: bold;
+            margin-bottom: 0.5rem;
+            display: block;
+        }
+        .text-indent {
+            text-indent: 1.5em;
+        }
+    </style>
+</head>
+<body class="flex flex-col min-h-screen">
+
+    <!-- Header -->
+    <header class="bg-philo-dark text-white p-6 shadow-md no-print">
+        <div class="max-w-4xl mx-auto flex justify-between items-center">
+            <div>
+                <h1 class="text-3xl font-serif font-bold italic">Utilitarismus: Vertiefung</h1>
+                <p class="text-sm opacity-80 mt-2">Qualitativer Hedonismus, Regelutilitarismus & Präferenzutilitarismus</p>
+            </div>
+            <div class="text-right hidden md:block">
+                <div id="save-status" class="text-green-400 text-xs font-bold"><i class="fas fa-save"></i> Automatische Speicherung aktiv</div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="flex-grow max-w-4xl mx-auto w-full p-4 md:p-8">
+
+        <!-- Druck-Header (nur sichtbar beim Drucken) -->
+        <div class="print-only-header text-center">
+            <h1>Arbeitsblatt: Utilitarismus-Varianten</h1>
+            <p>Ergebnisse der Textarbeit: Mill, Frankena, Singer</p>
+        </div>
+
+        <!-- Navigation Tabs -->
+        <div class="flex flex-wrap gap-2 mb-8 tab-nav no-print">
+            <button onclick="switchTab('tab1')" id="btn-tab1" class="px-4 py-2 bg-philo-dark text-white rounded shadow font-serif hover:bg-philo-accent transition">1. J.S. Mill (Textarbeit)</button>
+            <button onclick="switchTab('tab2')" id="btn-tab2" class="px-4 py-2 bg-white text-philo-dark border border-gray-300 rounded shadow font-serif hover:bg-gray-100 transition">2. Handlungs- vs. Regelutilitarismus</button>
+            <button onclick="switchTab('tab3')" id="btn-tab3" class="px-4 py-2 bg-white text-philo-dark border border-gray-300 rounded shadow font-serif hover:bg-gray-100 transition">3. Peter Singer (Präferenz)</button>
+            <button onclick="switchTab('tab4')" id="btn-tab4" class="px-4 py-2 bg-white text-philo-dark border border-gray-300 rounded shadow font-serif hover:bg-gray-100 transition border-l-4 border-l-philo-accent">4. Podiums-Vorbereitung</button>
+        </div>
+
+        <!-- TAB 1: Mill -->
+        <div id="tab1" class="tab-content active">
+            <h2 class="text-2xl font-serif font-bold text-philo-dark mb-4 border-b-2 border-philo-accent pb-2">I. Qualität statt Quantität</h2>
+            
+            <div class="grid md:grid-cols-2 gap-8 mb-8">
+                <!-- Source Text Column -->
+                <div class="source-text-box bg-white p-6 rounded shadow border-l-4 border-philo-dark text-sm leading-relaxed overflow-y-auto max-h-[600px]">
+                    <span class="source-marker">Quelle: John Stuart Mill, Der Utilitarismus (1861)</span>
+                    <h3 class="font-bold mb-3 font-serif text-lg">Lieber ein unzufriedener Mensch als ein zufriedenes Schwein?</h3>
+                    
+                    <p class="text-justify mb-4">
+                        "Die Auffassung, für die die Nützlichkeit oder das Prinzip des größten Glücks die Grundlage der Moral ist, besagt, dass Handlungen insoweit und in dem Maße moralisch richtig sind, als sie die Tendenz haben, Glück zu befördern, und insoweit moralisch falsch, als sie die Tendenz haben, das Gegenteil von Glück zu bewirken. Unter 'Glück' ist dabei Lust und das Freisein von Unlust, unter 'Unglück' Unlust und das Fehlen von Lust verstanden. [...]"
+                    </p>
+                    <p class="text-justify mb-4">
+                        "Es ist nun aber eine unbestreitbare Tatsache, dass diejenigen, die mit beiden gleichermaßen bekannt und für beide gleichermaßen empfänglich sind, der Lebensweise entschieden den Vorzug geben, an der auch ihre höheren Fähigkeiten beteiligt sind. Nur wenige Menschen würden darein einwilligen, sich in eines der niederen Tiere verwandeln zu lassen, wenn man ihnen verspräche, dass sie die Befriedigung des Tiers im vollen Umfange auskosten dürften. Kein intelligenter Mensch möchte ein Narr, kein gebildeter Mensch ein Dummkopf, keiner, der feinfühlig und gewissenhaft ist, selbstsüchtig und niederträchtig sein – auch wenn sie überzeugt wären, dass der Narr, der Dummkopf oder der Schurke mit seinem Schicksal zufriedener ist als sie mit dem ihren."
+                    </p>
+                    <div class="bg-gray-100 p-3 rounded border-l-2 border-gray-400 italic mb-4">
+                        "Es ist besser, ein unzufriedener Mensch zu sein als ein zufriedenes Schwein; besser ein unzufriedener Sokrates als ein zufriedener Narr. Und wenn der Narr oder das Schwein anderer Ansicht sind, dann deshalb, weil sie nur ihre eigene Seite der Angelegenheit kennen. Die andere Partei hingegen kennt beide Seiten."
+                    </div>
+                    
+                    <div class="mt-4">
+                        <!-- Robuste Bild-Einbindung -->
+                        <img src="https://upload.wikimedia.org/wikipedia/commons/9/99/John_Stuart_Mill_1870.jpg" 
+                             alt="John Stuart Mill" 
+                             class="w-full h-48 object-cover object-top rounded grayscale hover:grayscale-0 transition duration-500"
+                             onerror="this.style.display='none'; this.parentElement.innerHTML+='<div class=\'bg-gray-200 p-4 text-center text-xs rounded text-gray-500\'><i class=\'fas fa-user-graduate mb-2 text-2xl\'></i><br>Bild von J.S. Mill (Wikimedia) nicht verfügbar</div>'">
+                        <p class="text-xs text-gray-500 mt-1">John Stuart Mill (1806–1873)</p>
+                    </div>
+                </div>
+
+                <!-- Analysis Column -->
+                <div class="flex flex-col gap-6">
+                    <div class="instructions bg-blue-50 p-4 rounded border border-blue-200 text-sm text-blue-800 mb-2">
+                        <i class="fas fa-info-circle mr-2"></i><strong>Aufgabe:</strong> Mill erweitert Benthams quantitativen Ansatz um eine qualitative Dimension.
+                    </div>
+
+                    <div class="input-group">
+                        <label class="block font-bold text-philo-dark mb-2">1. Das Kriterium der Qualität:</label>
+                        <p class="text-xs text-gray-500 mb-2 no-print">Wie begründet Mill, dass geistige Freuden (höhere Fähigkeiten) wertvoller sind als rein sinnliche Lust, selbst wenn diese intensiver wäre?</p>
+                        <textarea id="mill_quality" class="w-full p-3 border rounded shadow-inner focus:ring-2 focus:ring-philo-accent outline-none" rows="6"></textarea>
+                    </div>
+
+                    <div class="input-group">
+                        <label class="block font-bold text-philo-dark mb-2">2. Die "kompetenten Richter":</label>
+                        <p class="text-xs text-gray-500 mb-2 no-print">Wer entscheidet über den Wert einer Freude? Warum kann laut Mill das "Schwein" (oder der Narr) nicht mitreden?</p>
+                        <textarea id="mill_judges" class="w-full p-3 border rounded shadow-inner focus:ring-2 focus:ring-philo-accent outline-none" rows="5"></textarea>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="video-container no-print mb-8 aspect-video w-full bg-black rounded overflow-hidden">
+                <iframe class="w-full h-full" src="https://www.youtube-nocookie.com/embed/URR_Y57WfKk" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+            </div>
+        </div>
+
+        <!-- TAB 2: Act vs Rule -->
+        <div id="tab2" class="tab-content">
+            <h2 class="text-2xl font-serif font-bold text-philo-dark mb-4 border-b-2 border-philo-accent pb-2">II. Handlungs- vs. Regelutilitarismus</h2>
+
+            <div class="grid md:grid-cols-2 gap-8">
+                <!-- Text M2 Frankena -->
+                <div class="source-text-box bg-white p-6 rounded shadow border-l-4 border-gray-400 text-sm leading-relaxed overflow-y-auto max-h-[600px]">
+                    <span class="source-marker">Quelle: William K. Frankena, Analytische Ethik</span>
+                    <h3 class="font-bold mb-3 font-serif text-lg">Zwei Varianten des Nützlichkeitsprinzips</h3>
+                    
+                    <h4 class="font-bold text-yellow-700 mt-4 mb-2">A. Der Handlungsutilitarismus</h4>
+                    <p class="text-justify mb-3">
+                        "Handlungsutilitaristen sind der Meinung, man solle, was richtig oder pflichtmäßig ist, im Allgemeinen [...] unter unmittelbarer Heranziehung des Prinzips der Nützlichkeit entscheiden [...]. Man muss sich fragen: 'Welche Folgen wird meine Ausführung dieser Handlung in dieser Situation haben?' [...] Verallgemeinerungen [...] mögen als Faustregeln, gegründet auf in der Vergangenheit gemachten Erfahrungen, von Nutzen sein; aber [es] kann niemals richtig sein, der Regel, die Wahrheit zu sagen, Folge zu leisten, wenn in einem konkreten Fall stichhaltige Gründe für die Annahme vorliegen, dass dem genannten Ziel mit einer Lüge besser gedient ist."
+                    </p>
+
+                    <h4 class="font-bold text-blue-700 mt-4 mb-2">B. Der Regelutilitarismus</h4>
+                    <p class="text-justify mb-3">
+                        "Anderer Meinung ist der Regelutilitarismus [...]. [Dieser] betont [...] die zentrale Rolle von Regeln für die Moral und besteht darauf [...], konkrete moralische Entscheidungen im Einklang mit einer Regel zu fällen (wie der Regel, die Wahrheit zu sagen), ohne Rücksicht darauf, welche Handlungsalternative in der betreffenden Situation die besten Folgen hat. [...] Zudem verlangt der Regelutilitarismus weiter, Regeln stets so zu wählen, dass sie ihrerseits auf das größte allgemeine Wohl ausgerichtet sind."
+                    </p>
+                    <div class="bg-gray-100 p-3 rounded border-l-2 border-gray-400 italic">
+                        "Das heißt, die Frage lautet nicht mehr, welche Handlung am nützlichsten ist, sondern welche Regel. Wenn wir eine Handlung in Betracht ziehen, so sollten wir uns nicht fragen 'Was werden die Folgen sein, wenn ich in diesem Fall so handle?', sondern 'Was wären die Folgen, wenn jeder in derartigen Fällen so handelte?'"
+                    </div>
+                </div>
+
+                <!-- Interactive Case Study: Irena Janus -->
+                <div class="flex flex-col gap-6">
+                    <div class="bg-white p-4 rounded border border-gray-300 shadow-sm no-print">
+                        <h4 class="font-bold text-philo-accent mb-2"><i class="fas fa-plane"></i> Fallbeispiel M1: Heuchelei oder höhere Ziele?</h4>
+                        <p class="text-sm text-gray-600 mb-2">
+                            Irena Janus hält Vorträge über die katastrophalen Folgen der Erderwärmung. Um ihre Zuhörer weltweit zu erreichen, nutzt sie Flugzeuge, die massiv CO2 ausstoßen. Eine Flugbegleiterin fragt: "Heuchelei?"
+                        </p>
+                        <p class="text-sm italic text-gray-800 border-l-2 border-gray-300 pl-2">
+                            Irenas Position: "Wenn ich mich weigere zu fliegen, verzögert das die globale Erwärmung keine Sekunde. Meine Arbeit aber könnte dazu beitragen, Veränderungen im großen Rahmen herbeizuführen. Sich gegen das Fliegen zu sträuben, wäre eine hohle Geste."
+                        </p>
+                    </div>
+
+                    <div class="input-group">
+                        <label class="block font-bold text-philo-dark mb-2">3. Argumentation des Handlungsutilitaristen:</label>
+                        <p class="text-xs text-gray-500 mb-2 no-print">Warum könnte der Handlungsutilitarist Irenas Flüge rechtfertigen? (Fokus auf unmittelbare Folgen im Einzelfall)</p>
+                        <textarea id="act_util" class="w-full p-3 border rounded shadow-inner focus:ring-2 focus:ring-philo-accent outline-none" rows="4"></textarea>
+                    </div>
+
+                    <div class="input-group">
+                        <label class="block font-bold text-philo-dark mb-2">4. Argumentation des Regelutilitaristen:</label>
+                        <p class="text-xs text-gray-500 mb-2 no-print">Wenden Sie das Verfahren der Verallgemeinerung an: "Was wären die Folgen, wenn jeder Umweltaktivist ständig fliegen würde?"</p>
+                        <textarea id="rule_util" class="w-full p-3 border rounded shadow-inner focus:ring-2 focus:ring-philo-accent outline-none" rows="4"></textarea>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- TAB 3: Peter Singer -->
+        <div id="tab3" class="tab-content">
+            <h2 class="text-2xl font-serif font-bold text-philo-dark mb-4 border-b-2 border-philo-accent pb-2">III. Präferenzutilitarismus (Peter Singer)</h2>
+            
+            <div class="grid md:grid-cols-2 gap-8 mb-6">
+                 <!-- Singer Image -->
+                <div class="no-print">
+                     <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/5/5e/Peter_Singer_at_MIT.jpg/800px-Peter_Singer_at_MIT.jpg" 
+                          alt="Peter Singer" 
+                          class="w-full rounded shadow-md mb-2 max-h-64 object-cover"
+                          onerror="this.style.display='none'; this.parentElement.innerHTML+='<div class=\'bg-gray-200 h-48 flex items-center justify-center text-gray-500 rounded\'><i class=\'fas fa-user-tie text-4xl\'></i></div>'">
+                     <p class="text-xs text-gray-500">Peter Singer (*1946), australischer Philosoph</p>
+                     
+                     <div class="mt-4 bg-yellow-50 p-4 rounded border border-yellow-200 text-sm">
+                        <h4 class="font-bold text-yellow-800 mb-1">Begriffserklärung: Präferenz</h4>
+                        <p>Eine "Präferenz" ist nicht nur ein kurzfristiges Lustempfinden, sondern ein grundlegendes Interesse oder ein Wunsch (z.B. der Wunsch weiterzuleben, der Wunsch nach Bildung, der Wunsch nach Schmerzfreiheit). Im Gegensatz zum klassischen Utilitarismus zählen hier <em>alle</em> Interessen, nicht nur die Bilanz von Lust/Unlust.</p>
+                     </div>
+                </div>
+
+                <div class="source-text-box text-sm leading-relaxed overflow-y-auto max-h-[600px] bg-white p-6 rounded shadow border-l-4 border-philo-dark">
+                    <span class="source-marker">Quelle: Peter Singer, Praktische Ethik (1979)</span>
+                    <h3 class="font-bold mb-3 font-serif text-lg">Der universale Standpunkt</h3>
+                    
+                    <p class="text-justify mb-3">
+                        "[...] Moralische Urteile fällen, über unsere eigenen Neigungen und Abneigungen hinausgehen. Von einem moralischen Standpunkt [moral point of view] aus betrachtet ist die Tatsache unerheblich, dass ich es bin, der beispielsweise davon profitiert, zu mogeln, und dass du es bist, der dabei verliert. Die Ethik verlangt von uns, dass wir über 'Ich' und 'Du' hinausgehen hin zu einem universalen Gesetz, dem universalisierbaren Urteil, dem Standpunkt des unparteiischen Betrachters [...]."
+                    </p>
+                    <p class="text-justify mb-3">
+                        "Der universale Aspekt der Ethik, meine ich, liefert uns eine Basis dafür, zumindest anfänglich eine utilitaristische Position im weiteren Sinn einzunehmen. [...] Meine Begründung für diese Behauptung ist folgende: Indem ich akzeptiere, dass moralische Urteile von einem universalen Standpunkt aus getroffen werden müssen, akzeptiere ich, dass meine eigenen Bedürfnisse, Wünsche und Interessen nicht einfach deshalb, weil sie <em>meine</em> Präferenzen sind, mehr zählen als die Interessen von irgendjemand anderem. Daher muss dann, wenn ich moralisch denke, mein ganz natürliches Bestreben, dass für meine Bedürfnisse, Wünsche und Interessen – ich werde sie von nun an als 'Präferenzen' bezeichnen – gesorgt wird, ausgedehnt werden auf die Präferenzen anderer."
+                    </p>
+                    <div class="bg-gray-100 p-3 rounded border-l-2 border-gray-400 italic">
+                        "Also muss ich nun anstelle meiner eigenen Präferenzen die all der anderen berücksichtigen, die von meiner Entscheidung betroffen sind. [...] Das ist die erste skizzierte Denkweise ist eine Form von Utilitarismus [...]. Im Gegensatz dazu ist die bereits erwähnte Auffassung unter dem Namen 'Präferenz-Utilitarismus' bekannt, weil sie behauptet, dass wir das tun sollten, was per saldo die Präferenzen der Betroffenen fördert."
+                    </div>
+                </div>
+            </div>
+
+            <div class="input-group mt-6">
+                <label class="block font-bold text-philo-dark mb-2">5. Vom Egoismus zum Universalismus:</label>
+                <textarea id="singer_universal" class="w-full p-3 border rounded shadow-inner focus:ring-2 focus:ring-philo-accent outline-none" rows="4" placeholder="Erläutern Sie Singers Gedankengang: Warum zwingt uns der 'moralische Standpunkt' dazu, fremde Interessen genauso ernst zu nehmen wie eigene?"></textarea>
+            </div>
+            
+            <div class="input-group mt-6">
+                <label class="block font-bold text-philo-dark mb-2">6. Abgrenzung Bentham vs. Singer:</label>
+                <p class="text-xs text-gray-500 mb-2 no-print">Bentham fragt: "Können sie leiden?" Singer fragt: "Haben sie Interessen/Präferenzen?" - Welchen Unterschied macht das z.B. bei der Tötung von Tieren oder bei zukunftsorientierten Wünschen?</p>
+                <textarea id="singer_diff" class="w-full p-3 border rounded shadow-inner focus:ring-2 focus:ring-philo-accent outline-none" rows="4"></textarea>
+            </div>
+        </div>
+
+        <!-- TAB 4: The Duel (Synthesis) -->
+        <div id="tab4" class="tab-content">
+            <h2 class="text-2xl font-serif font-bold text-philo-dark mb-4 border-b-2 border-philo-accent pb-2">IV. Synthese: Das philosophische Streitgespräch</h2>
+            <p class="mb-6 no-print text-gray-700">Bereiten Sie Ihre Argumente für die Podiumsdiskussion vor. Nutzen Sie das Wissen aus den vorangegangenen Texten.</p>
+
+            <div class="grid md:grid-cols-2 gap-4">
+                <!-- Bentham Side -->
+                <div class="border-2 border-gray-300 rounded p-4 bg-white">
+                    <h3 class="font-serif font-bold text-xl mb-2 text-center text-gray-600">Jeremy Bentham</h3>
+                    <div class="text-xs text-center mb-4 uppercase tracking-widest text-gray-400 font-bold">Quantitativer Hedonismus</div>
+                    <div class="text-sm italic text-gray-500 text-center mb-4">"Pushpin is as good as poetry" (Wenn das Spiel so viel Lust bereitet wie Poesie, ist es gleichwertig)</div>
+                    
+                    <div class="input-group">
+                        <label class="block font-bold text-sm mb-1 text-philo-dark">Angriff auf Mill:</label>
+                        <p class="text-xs text-gray-500 mb-2 no-print">Warum ist Mills Unterscheidung in "Qualität" elitär? Wer bestimmt, was "höher" ist? Ist das nicht subjektiv?</p>
+                        <textarea id="duel_bentham" class="w-full p-2 border rounded bg-gray-50 focus:ring-1 focus:ring-gray-400" rows="8"></textarea>
+                    </div>
+                </div>
+
+                <!-- Mill Side -->
+                <div class="border-2 border-philo-dark rounded p-4 bg-white relative">
+                    <!-- VS Badge -->
+                    <div class="absolute top-1/2 -left-6 bg-philo-accent text-white rounded-full w-10 h-10 flex items-center justify-center font-bold border-4 border-philo-bg transform -translate-y-1/2 hidden md:flex">VS</div>
+
+                    <h3 class="font-serif font-bold text-xl mb-2 text-center text-philo-dark">John Stuart Mill</h3>
+                    <div class="text-xs text-center mb-4 uppercase tracking-widest text-philo-accent font-bold">Qualitativer Hedonismus</div>
+                     <div class="text-sm italic text-gray-500 text-center mb-4">"Es ist besser ein unzufriedener Sokrates zu sein..."</div>
+                    
+                    <div class="input-group">
+                        <label class="block font-bold text-sm mb-1 text-philo-dark">Verteidigung:</label>
+                        <p class="text-xs text-gray-500 mb-2 no-print">Warum brauchen wir qualitative Unterschiede, um die Menschenwürde zu wahren? Warum kann Quantität allein (z.B. Drogenrausch) nicht das Ziel sein?</p>
+                        <textarea id="duel_mill" class="w-full p-2 border rounded bg-gray-50 focus:ring-1 focus:ring-philo-accent" rows="8"></textarea>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Abschlussnotiz für Diskussion -->
+            <div class="mt-8 input-group bg-philo-soft p-4 rounded border border-gray-300">
+                <label class="block font-bold text-philo-dark mb-2">Ihr persönliches Fazit für die Diskussion:</label>
+                <textarea id="conclusion" class="w-full p-3 border rounded shadow-inner focus:ring-2 focus:ring-philo-accent outline-none bg-white" rows="4" placeholder="Welcher Ansatz ist tragfähiger? Brauchen wir Regeln (Regelutilitarismus) oder reicht die Einzelfallbetrachtung?"></textarea>
+            </div>
+        </div>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-philo-dark text-white p-4 mt-auto no-print">
+        <div class="max-w-4xl mx-auto flex justify-between items-center">
+            <div class="text-xs opacity-60">Material basierend auf Kursbuch Ethik Q12</div>
+            <button onclick="window.print()" class="bg-philo-accent hover:bg-white hover:text-philo-accent text-white font-bold py-2 px-6 rounded transition flex items-center gap-2 shadow-lg">
+                <i class="fas fa-print"></i> Notizen als PDF speichern
+            </button>
+        </div>
+    </footer>
+
+    <script>
+        // Tab Switching Logic
+        function switchTab(tabId) {
+            // Hide all tabs
+            document.querySelectorAll('.tab-content').forEach(tab => tab.classList.remove('active'));
+            // Remove active styles from buttons
+            document.querySelectorAll('.tab-nav button').forEach(btn => {
+                btn.classList.remove('bg-philo-dark', 'text-white');
+                btn.classList.add('bg-white', 'text-philo-dark');
+            });
+
+            // Show clicked tab
+            document.getElementById(tabId).classList.add('active');
+            // Style active button
+            const activeBtn = document.getElementById('btn-' + tabId);
+            activeBtn.classList.remove('bg-white', 'text-philo-dark');
+            activeBtn.classList.add('bg-philo-dark', 'text-white');
+
+            // Save state
+            localStorage.setItem('currentTab_Mill', tabId);
+        }
+
+        // Local Storage Logic
+        const inputs = [
+            'mill_quality', 'mill_judges', 
+            'act_util', 'rule_util', 
+            'singer_universal', 'singer_diff', 
+            'duel_bentham', 'duel_mill', 'conclusion'
+        ];
+
+        function loadData() {
+            inputs.forEach(id => {
+                const val = localStorage.getItem(id);
+                if (val) document.getElementById(id).value = val;
+            });
+            
+            // Load last tab
+            const lastTab = localStorage.getItem('currentTab_Mill');
+            if (lastTab) switchTab(lastTab);
+            else switchTab('tab1');
+        }
+
+        function saveData(e) {
+            localStorage.setItem(e.target.id, e.target.value);
+            const status = document.getElementById('save-status');
+            status.style.opacity = '1';
+            setTimeout(() => status.style.opacity = '0.7', 1000);
+        }
+
+        // Init
+        document.addEventListener('DOMContentLoaded', () => {
+            loadData();
+            inputs.forEach(id => {
+                const el = document.getElementById(id);
+                if(el) el.addEventListener('input', saveData);
+            });
+        });
+    </script>
+</body>
+</html>
